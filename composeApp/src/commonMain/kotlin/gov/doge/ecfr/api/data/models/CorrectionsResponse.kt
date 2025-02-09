@@ -1,10 +1,10 @@
-package gov.doge.ecfr.api.data
+package gov.doge.ecfr.api.data.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Corrections(
+data class CorrectionsResponse(
     @SerialName("ecfr_corrections")
     val corrections: List<Correction>
 )

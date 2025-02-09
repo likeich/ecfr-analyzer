@@ -1,10 +1,10 @@
-package gov.doge.ecfr.api.data
+package gov.doge.ecfr.api.data.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AgenciesData(
+data class AgenciesResponse(
     val agencies: List<Agency>
 )
 
@@ -30,4 +30,14 @@ data class AgencyCfrReference(
     val chapter: String? = null,
     val part: String? = null,
     val subchapter: String? = null,
-)
+) {
+    fun toCfrHierarchy(): CfrHierarchy {
+        return CfrHierarchy(
+            title = title.toString(),
+            subtitle = subtitle,
+            chapter = chapter,
+            part = part,
+            subchapter = subchapter
+        )
+    }
+}
