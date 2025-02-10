@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
@@ -42,6 +43,7 @@ object SearchScreen : DogeScreen() {
     override fun Content() {
         val screenModel = rememberScreenModel { SearchScreenModel() }
         val appState = LocalAppState.current
+        val uriHandler = LocalUriHandler.current
 
         LimitedColumn {
             ElevatedCard(
@@ -79,7 +81,8 @@ object SearchScreen : DogeScreen() {
                 ) {
                     SimpleCard(
                         title = result.hierarchy.toReadableString(),
-                        subtitle = result.fullTextExcerpt ?: result.type
+                        subtitle = result.fullTextExcerpt ?: result.type,
+                        onClick = { uriHandler.openUri(result.hierarchy.toUrl()) }
                     )
                 }
             }

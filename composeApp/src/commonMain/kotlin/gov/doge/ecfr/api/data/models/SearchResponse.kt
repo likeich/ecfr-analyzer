@@ -56,6 +56,6 @@ data class SearchMeta(
     @SerialName("current_page") val currentPage: Int,
     @SerialName("total_pages") val totalPages: Int,
     @SerialName("total_count") val totalCount: Int,
-    @SerialName("max_score") val maxScore: Double,
+    @SerialName("max_score") val maxScore: Double = 0.0,
     val description: String
 )

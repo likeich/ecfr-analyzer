@@ -80,4 +80,18 @@ data class CfrHierarchy(
             appendix?.let { "Appendix: $it" }
         ).joinToString(" | ")
     }
+
+    // Example: https://www.ecfr.gov/current/title-7/subtitle-B/chapter-I/subchapter-A/part-28/subpart-E/subject-group-ECFR6f664639cfb67fd/section-28.952
+    fun toUrl(): String {
+        val url = "https://www.ecfr.gov/current/title-${title}/" +
+                subtitle?.let { "subtitle-${it}/" } +
+                chapter?.let { "chapter-${it}/" } +
+                subchapter?.let { "subchapter-${it}/" } +
+                part?.let { "part-${it}/" } +
+                subpart?.let { "subpart-${it}/" } +
+                subjectGroup?.let { "subject-group-${it}/" } +
+                section?.let { "section-${it}/" } +
+                appendix?.let { "appendix-${it}/" }
+        return url.replace("/null", "/")
+    }
 }

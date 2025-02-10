@@ -33,7 +33,7 @@ class RegulationClient {
         }
 
         install(ContentNegotiation) {
-            json(Json { prettyPrint = true })
+            json(Json { prettyPrint = true; ignoreUnknownKeys = true; isLenient = true })
         }
 
         engine {
