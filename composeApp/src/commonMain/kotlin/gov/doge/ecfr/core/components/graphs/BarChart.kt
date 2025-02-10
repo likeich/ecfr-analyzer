@@ -66,7 +66,7 @@ fun <T> BarChart(
             },
             animationMode = AnimationMode.Together { it * 50L },
             labelProperties = LabelProperties(
-                textStyle = TextStyle.Default.copy(color = MaterialTheme.colorScheme.onSurface, fontSize = 10.sp),
+                textStyle = TextStyle.Default.copy(color = MaterialTheme.colorScheme.onSurface),
                 padding = 2.dp,
                 enabled = true,
             ),

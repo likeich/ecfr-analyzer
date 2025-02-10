@@ -88,7 +88,7 @@ fun GraphCard(
                 colors = CardDefaults.elevatedCardColors(
                     containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(12.dp)
                 ),
-                modifier = Modifier.fillMaxHeight(.5f).aspectRatio(1f)
+                modifier = Modifier.fillMaxHeight(.5f).aspectRatio(2f/1f)
             ) {
                 Box(modifier = Modifier.padding(50.dp)) {
                     content()

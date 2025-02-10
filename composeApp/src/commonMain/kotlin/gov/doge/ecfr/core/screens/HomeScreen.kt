@@ -28,7 +28,7 @@ import gov.doge.ecfr.core.components.AgencyInformation
 import gov.doge.ecfr.core.components.graphs.BarChart
 import gov.doge.ecfr.core.components.EnumDropdownButton
 import gov.doge.ecfr.core.components.LimitedColumn
-import gov.doge.ecfr.core.components.PieChartComponent
+import gov.doge.ecfr.core.components.graphs.PieChartComponent
 import gov.doge.ecfr.core.components.SimpleCard
 import gov.doge.ecfr.core.screenmodels.FilterBy
 import gov.doge.ecfr.core.screenmodels.HomeScreenModel
@@ -36,8 +36,6 @@ import gov.doge.ecfr.core.screenmodels.SortBy
 import gov.doge.ecfr.theme.Dimensions
 import gov.doge.ecfr.utils.toColor
 import gov.doge.ecfr.utils.toReadableString
-import org.kodein.emoji.Emoji
-import org.kodein.emoji.symbols.warning.Warning
 
 object HomeScreen : DogeScreen() {
     override val icon = Res.drawable.house_fill

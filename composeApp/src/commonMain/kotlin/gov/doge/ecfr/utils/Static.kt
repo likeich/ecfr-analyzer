@@ -86,16 +86,13 @@ fun parseHtmlToAnnotatedString(text: String): AnnotatedString {
     return buildAnnotatedString {
         var currentIndex = 0
 
-        // Regex to match <strong>...</strong> and <span class="elipsis">...</span>
         val regex = "<strong>(.*?)</strong>|<span class=\"elipsis\">(.*?)</span>".toRegex()
 
         regex.findAll(text).forEach { match ->
-            // Add text before the match
             append(text.substring(currentIndex, match.range.first))
 
             when {
                 match.groups[1] != null -> {
-                    // Bold text inside <strong>...</strong>
                     pushStyle(
                         SpanStyle(
                             fontWeight = FontWeight.ExtraBold,
@@ -111,11 +108,9 @@ fun parseHtmlToAnnotatedString(text: String): AnnotatedString {
                 }
             }
 
-            // Move current index
             currentIndex = match.range.last + 1
         }
 
-        // Append remaining text
         if (currentIndex < text.length) {
             append(text.substring(currentIndex))
         }

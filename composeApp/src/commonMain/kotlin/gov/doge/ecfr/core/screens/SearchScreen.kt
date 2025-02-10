@@ -30,6 +30,9 @@ import gov.doge.ecfr.core.components.SimpleCard
 import gov.doge.ecfr.core.screenmodels.SearchScreenModel
 import gov.doge.ecfr.theme.Dimensions
 import org.jetbrains.compose.resources.DrawableResource
+import org.kodein.emoji.Emoji
+import org.kodein.emoji.compose.m3.TextWithNotoImageEmoji
+import org.kodein.emoji.objects.light_video.MagnifyingGlassTiltedRight
 
 object SearchScreen : DogeScreen() {
     override val icon = Res.drawable.binoculars_fill
@@ -65,7 +68,7 @@ object SearchScreen : DogeScreen() {
                         }
                     )
                     Button(onClick = { screenModel.search(appState.client) }) {
-                        Text("Search")
+                        TextWithNotoImageEmoji("${Emoji.MagnifyingGlassTiltedRight} Search")
                     }
                 }
             }

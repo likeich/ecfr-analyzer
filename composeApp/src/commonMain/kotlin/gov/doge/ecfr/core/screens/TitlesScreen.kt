@@ -27,7 +27,7 @@ import gov.doge.ecfr.core.components.graphs.BarChart
 import gov.doge.ecfr.core.components.EnumDropdownButton
 import gov.doge.ecfr.core.components.LimitedColumn
 import gov.doge.ecfr.core.components.graphs.LineGraph
-import gov.doge.ecfr.core.components.PieChartComponent
+import gov.doge.ecfr.core.components.graphs.PieChartComponent
 import gov.doge.ecfr.core.components.SimpleCard
 import gov.doge.ecfr.core.screenmodels.FilterBy
 import gov.doge.ecfr.core.screenmodels.SortBy

@@ -1,4 +1,4 @@
-package gov.doge.ecfr.core.components
+package gov.doge.ecfr.core.components.graphs
 
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -10,7 +10,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import gov.doge.ecfr.core.components.graphs.GraphCard
 import gov.doge.ecfr.utils.toColor
 import ir.ehsannarmani.compose_charts.PieChart
 import ir.ehsannarmani.compose_charts.models.Pie
