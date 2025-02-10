@@ -5,6 +5,8 @@ import gov.doge.ecfr.api.data.models.Agency
 import gov.doge.ecfr.api.data.models.CfrHierarchy
 import gov.doge.ecfr.api.data.models.Correction
 import gov.doge.ecfr.api.data.models.CorrectionsResponse
+import gov.doge.ecfr.api.data.models.SearchResponse
+import gov.doge.ecfr.api.data.models.SearchResult
 import gov.doge.ecfr.api.data.models.Title
 import gov.doge.ecfr.api.data.models.TitleStructure
 import gov.doge.ecfr.api.data.models.TitlesResponse
@@ -40,7 +42,7 @@ class RegulationClient {
     }
     private val lenientJson = Json { ignoreUnknownKeys = true }
     private val titleStructures = mutableMapOf<Int, TitleStructure>()
-    private val proxyUrl = "https://thekyle.pythonanywhere.com/proxy?url="
+    private val proxyUrl = "https://corsproxy.io/?key=e9655196&url="
     private val baseUrl = "${proxyUrl}https://www.ecfr.gov"
 
     suspend fun getAgencies(): List<Agency>? {
@@ -124,6 +126,18 @@ class RegulationClient {
         } catch (e: Exception) {
             e.printStackTrace()
             null
+        }
+    }
+
+    suspend fun search(query: String): List<SearchResult> {
+        return try {
+            val response: SearchResponse = httpClient.get("${baseUrl}/api/versioner/v1/search.json") {
+                parameter("q", query)
+            }.body()
+            response.results
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
         }
     }
 
