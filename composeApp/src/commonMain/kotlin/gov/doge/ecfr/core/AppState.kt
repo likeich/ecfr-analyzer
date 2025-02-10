@@ -2,9 +2,11 @@ package gov.doge.ecfr.core
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.runtime.staticCompositionLocalOf
 import gov.doge.ecfr.api.data.RegulationClient
 import gov.doge.ecfr.api.data.models.Agency
@@ -17,6 +19,7 @@ class AppState {
     val titles: SnapshotStateList<Title> = mutableStateListOf()
     val agencies: SnapshotStateList<Agency> = mutableStateListOf()
     val corrections: SnapshotStateList<Correction> = mutableStateListOf()
+    val titleCorrections: SnapshotStateMap<Title, List<Correction>> = mutableStateMapOf()
     var averageWordCount: Int by mutableStateOf(0)
     var state: State by mutableStateOf(State.Loading(""))
 
@@ -35,6 +38,10 @@ class AppState {
             state = State.Loading("Loading corrections...")
             corrections.clear()
             corrections.addAll(client.getCorrections() ?: emptyList())
+            titleCorrections.clear()
+            titleCorrections.putAll(titles.associateWith { title ->
+                corrections.filter { it.title == title.number }
+            })
 
             state = State.Loading("Loading word counts...")
             var agenciesLoaded = 0

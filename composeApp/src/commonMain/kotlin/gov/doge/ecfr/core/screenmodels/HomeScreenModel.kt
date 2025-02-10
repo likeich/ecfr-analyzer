@@ -15,6 +15,7 @@ class HomeScreenModel : ScreenModel {
         return when (sortBy) {
             SortBy.NAME -> allAgencies.sortedBy { it.sortableName }
             SortBy.WORD_COUNT -> allAgencies.sortedByDescending { it.wordCount }
+            else -> allAgencies
         }
     }
 
@@ -36,7 +37,9 @@ class HomeScreenModel : ScreenModel {
 
 enum class SortBy {
     NAME,
-    WORD_COUNT
+    WORD_COUNT,
+    CORRECTION_COUNT,
+    DATE,
 }
 
 enum class FilterBy {

@@ -3,7 +3,6 @@ package gov.doge.ecfr.core
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -101,7 +100,7 @@ fun TopBar() {
 }
 
 @Composable
-fun RowScope.StateView() {
+fun StateView() {
     val appState = LocalAppState.current
 
     when (appState.state) {
