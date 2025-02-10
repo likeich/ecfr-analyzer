@@ -15,7 +15,7 @@ import gov.doge.ecfr.api.data.models.Title
 import gov.doge.ecfr.utils.mapAsync
 
 class AppState {
-    private val client = RegulationClient()
+    val client = RegulationClient()
     val titles: SnapshotStateList<Title> = mutableStateListOf()
     val agencies: SnapshotStateList<Agency> = mutableStateListOf()
     val corrections: SnapshotStateList<Correction> = mutableStateListOf()

@@ -68,4 +68,16 @@ data class CfrHierarchy(
         ).joinToString(" | ")
     }
 
+    fun toReadableString(): String {
+        return listOfNotNull(
+            title.let { "Title: $it" },
+            subtitle?.let { "Subtitle: $it" },
+            chapter?.let { "Chapter: $it" },
+            subchapter?.let { "Subchapter: $it" },
+            part?.let { "Part: $it" },
+            subpart?.let { "Subpart: $it" },
+            section?.let { "Section: $it" },
+            appendix?.let { "Appendix: $it" }
+        ).joinToString(" | ")
+    }
 }

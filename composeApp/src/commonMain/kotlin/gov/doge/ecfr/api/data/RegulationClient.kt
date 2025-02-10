@@ -10,6 +10,7 @@ import gov.doge.ecfr.api.data.models.SearchResult
 import gov.doge.ecfr.api.data.models.Title
 import gov.doge.ecfr.api.data.models.TitleStructure
 import gov.doge.ecfr.api.data.models.TitlesResponse
+import gov.doge.ecfr.getPlatform
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpTimeout
@@ -43,7 +44,11 @@ class RegulationClient {
     private val lenientJson = Json { ignoreUnknownKeys = true }
     private val titleStructures = mutableMapOf<Int, TitleStructure>()
     private val proxyUrl = "https://corsproxy.io/?key=e9655196&url="
-    private val baseUrl = "${proxyUrl}https://www.ecfr.gov"
+    private val baseUrl = if (getPlatform().requiresProxy) {
+        proxyUrl + "https://www.ecfr.gov"
+    } else {
+        "https://www.ecfr.gov"
+    }
 
     suspend fun getAgencies(): List<Agency>? {
         return try {
@@ -131,8 +136,10 @@ class RegulationClient {
 
     suspend fun search(query: String): List<SearchResult> {
         return try {
-            val response: SearchResponse = httpClient.get("${baseUrl}/api/versioner/v1/search.json") {
-                parameter("q", query)
+            val response: SearchResponse = httpClient.get("${baseUrl}/api/search/v1/results") {
+                parameter("query", query)
+                parameter("per_page", 100)
+                parameter("order", "relevance")
             }.body()
             response.results
         } catch (e: Exception) {
@@ -162,16 +169,7 @@ class RegulationClient {
 
 suspend fun main() {
     val client = RegulationClient()
-    val agencies = client.getAgencies()
-    //println(agencies?.agencies?.map { it.name })
-    val corrections = client.getCorrections()
-    //println(corrections)
-    //corrections?.corrections?.filter { correction -> correction.position.any { !it.isDigit() } }?.let { println(it) }
-    val correctionsForTitle = client.getCorrectionsForTitle(16)
-    //println(correctionsForTitle)
-    val titles = client.getTitles()!!
-    //println(titles)
-    val titleOne = titles.find { it.number == 1 }
-    val titleStructure = client.getTitleStructure(titleOne!!)
-    println(titleStructure!!.findChild(CfrHierarchy(title = "1"))?.wordCount)
+    client.search("government").forEach {
+        println(it)
+    }
 }

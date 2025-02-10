@@ -15,16 +15,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import gov.doge.ecfr.api.data.models.Agency
 import gov.doge.ecfr.core.LocalAppState
 import gov.doge.ecfr.theme.Dimensions
-import gov.doge.ecfr.utils.toReadableString
-import org.kodein.emoji.Emoji
+import gov.doge.ecfr.utils.parseHtmlToAnnotatedString
 import org.kodein.emoji.compose.m3.TextWithNotoImageEmoji
-import org.kodein.emoji.symbols.warning.Warning
 
 @Composable
 fun SimpleCard(
@@ -35,7 +33,6 @@ fun SimpleCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
-    val appState = LocalAppState.current
     val alpha = if (active) 1f else 0.4f
     val containerColor by animateColorAsState(
         targetValue = if (selected) MaterialTheme.colorScheme.primaryContainer else Color.Unspecified
@@ -65,8 +62,13 @@ fun SimpleCard(
                     maxLines = 2
                 )
 
-                TextWithNotoImageEmoji(
-                    text = subtitle,
+                val parsedSubtitle = if (subtitle.contains("<")) {
+                    parseHtmlToAnnotatedString(subtitle)
+                } else {
+                    buildAnnotatedString { append(subtitle) }
+                }
+                Text(
+                    text = parsedSubtitle,
                     style = MaterialTheme.typography.bodySmall
                 )
             }

@@ -112,15 +112,9 @@ object HomeScreen : DogeScreen() {
                 modifier = Modifier.heightIn(max = 6000.dp)
             ) {
                 items(sortedAgencies, key = { it.displayName }) { agency ->
-                    val emoji: String = if (agency.wordCount > appState.averageWordCount.times(1.25)) {
-                        "${Emoji.Warning} "
-                    } else {
-                        ""
-                    }
-
                     SimpleCard(
                         title = agency.displayName,
-                        subtitle = "$emoji${agency.wordCount.toDouble().toReadableString()} words",
+                        subtitle = "${agency.wordCount.toDouble().toReadableString()} words",
                         active = topAgencies.contains(agency),
                         selected = screenModel.selectedAgency == agency,
                         onClick = { screenModel.onAgencySelected(agency) },

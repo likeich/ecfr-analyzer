@@ -14,28 +14,15 @@ data class SearchResult(
     @SerialName("starts_on") val startsOn: String,
     @SerialName("ends_on") val endsOn: String?,
     val type: String,
-    val hierarchy: Hierarchy,
+    val hierarchy: CfrHierarchy,
     @SerialName("hierarchy_headings") val hierarchyHeadings: HierarchyHeadings,
     val headings: Headings,
-    @SerialName("full_text_excerpt") val fullTextExcerpt: String,
+    @SerialName("full_text_excerpt") val fullTextExcerpt: String? = null,
     val score: Double,
     @SerialName("structure_index") val structureIndex: Int,
     val reserved: Boolean,
     val removed: Boolean,
     @SerialName("change_types") val changeTypes: List<String>
-)
-
-@Serializable
-data class Hierarchy(
-    val title: String,
-    val subtitle: String?,
-    val chapter: String?,
-    val subchapter: String?,
-    val part: String?,
-    val subpart: String?,
-    @SerialName("subject_group") val subjectGroup: String?,
-    val section: String?,
-    val appendix: String?
 )
 
 @Serializable

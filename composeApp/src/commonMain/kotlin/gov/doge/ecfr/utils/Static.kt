@@ -1,6 +1,14 @@
 package gov.doge.ecfr.utils
 
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -71,4 +79,45 @@ fun Double.toReadableString(): String {
 fun Double.roundTo(decimalPlaces: Int): String {
     val factor = 10.0.pow(decimalPlaces)
     return ((this * factor).toInt() / factor).toString()
+}
+
+@Composable
+fun parseHtmlToAnnotatedString(text: String): AnnotatedString {
+    return buildAnnotatedString {
+        var currentIndex = 0
+
+        // Regex to match <strong>...</strong> and <span class="elipsis">...</span>
+        val regex = "<strong>(.*?)</strong>|<span class=\"elipsis\">(.*?)</span>".toRegex()
+
+        regex.findAll(text).forEach { match ->
+            // Add text before the match
+            append(text.substring(currentIndex, match.range.first))
+
+            when {
+                match.groups[1] != null -> {
+                    // Bold text inside <strong>...</strong>
+                    pushStyle(
+                        SpanStyle(
+                            fontWeight = FontWeight.ExtraBold,
+                            background = MaterialTheme.colorScheme.primaryContainer,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    )
+                    append(match.groupValues[1])
+                    pop()
+                }
+                match.groups[2] != null -> {
+                    append("...")
+                }
+            }
+
+            // Move current index
+            currentIndex = match.range.last + 1
+        }
+
+        // Append remaining text
+        if (currentIndex < text.length) {
+            append(text.substring(currentIndex))
+        }
+    }
 }
