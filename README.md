@@ -1,18 +1,20 @@
-This is a Kotlin Multiplatform project targeting Android, Web, Desktop.
+![Screenshot 2025-02-10 at 03 03 50](https://github.com/user-attachments/assets/a1a42d76-16f4-4203-8e97-f9a3487f0c3c)
 
-* `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - `commonMain` is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    `iosMain` would be the right folder for such calls.
+A simple analyzer for the [electronic Code of Federal Regulations](https://www.ecfr.gov/).
 
+- Built over one day
+- Part of a job application for DOGE
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
-[Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/#compose-multiplatform),
-[Kotlin/Wasm](https://kotl.in/wasm/)…
+Features
+- Various statistics on government agencies and their regulations and the regulations themselves.
+- A simple search feature that links to the regulations.
+- Multiple filters and sort options.
+- Multiplatform on [the web](https://likeich.github.io/ecfr-analyzer/), Android, and desktop.
 
-We would appreciate your feedback on Compose/Web and Kotlin/Wasm in the public Slack channel [#compose-web](https://slack-chats.kotlinlang.org/c/compose-web).
-If you face any issues, please report them on [GitHub](https://github.com/JetBrains/compose-multiplatform/issues).
+## Gallery
 
-You can open the web application by running the `:composeApp:wasmJsBrowserDevelopmentRun` Gradle task.
+![Screenshot 2025-02-10 at 03 04 39](https://github.com/user-attachments/assets/d9ac1981-08c2-4ce6-8271-0a1815111d56)
+
+![Screenshot 2025-02-10 at 03 05 05](https://github.com/user-attachments/assets/837480a0-ee59-49ff-9186-2341fcd48854)
+
+![Screenshot 2025-02-10 at 03 05 10](https://github.com/user-attachments/assets/0dd5f6f7-0f44-4c5c-9821-4dc8836b61f0)
