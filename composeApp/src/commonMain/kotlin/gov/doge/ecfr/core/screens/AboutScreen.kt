@@ -37,7 +37,7 @@ object AboutScreen : DogeScreen() {
             ) {
                 Image(
                     painter = painterResource(Res.drawable.doge),
-                    contentDescription = "Doge Logo",
+                    contentDescription = "DOGE Logo",
                     modifier = Modifier.size(200.dp)
                 )
                 Text(

@@ -2,16 +2,12 @@ package gov.doge.ecfr.api.data
 
 import gov.doge.ecfr.api.data.models.AgenciesResponse
 import gov.doge.ecfr.api.data.models.Agency
-import gov.doge.ecfr.api.data.models.CfrDocument
 import gov.doge.ecfr.api.data.models.CfrHierarchy
 import gov.doge.ecfr.api.data.models.Correction
 import gov.doge.ecfr.api.data.models.CorrectionsResponse
 import gov.doge.ecfr.api.data.models.Title
 import gov.doge.ecfr.api.data.models.TitleStructure
 import gov.doge.ecfr.api.data.models.TitlesResponse
-import gov.doge.ecfr.utils.CodeTimer
-import gov.doge.ecfr.utils.forEachAsync
-import gov.doge.ecfr.utils.mapAsync
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpTimeout
@@ -22,7 +18,6 @@ import io.ktor.client.request.parameter
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.serialization.kotlinx.json.json
-import io.ktor.serialization.kotlinx.xml.xml
 import kotlinx.coroutines.Dispatchers
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.json.Json
@@ -35,11 +30,7 @@ class RegulationClient {
         }
 
         install(ContentNegotiation) {
-            json(
-                Json {
-                    prettyPrint = true
-                }
-            )
+            json(Json { prettyPrint = true })
         }
 
         engine {
@@ -49,10 +40,12 @@ class RegulationClient {
     }
     private val lenientJson = Json { ignoreUnknownKeys = true }
     private val titleStructures = mutableMapOf<Int, TitleStructure>()
+    private val proxyUrl = "https://thekyle.pythonanywhere.com/proxy?url="
+    private val baseUrl = "${proxyUrl}https://www.ecfr.gov"
 
     suspend fun getAgencies(): List<Agency>? {
         return try {
-            val response: AgenciesResponse = httpClient.get("https://www.ecfr.gov/api/admin/v1/agencies.json").body()
+            val response: AgenciesResponse = httpClient.get("${baseUrl}/api/admin/v1/agencies.json").body()
             response.agencies
         } catch (e: Exception) {
             e.printStackTrace()
@@ -62,7 +55,7 @@ class RegulationClient {
 
     suspend fun getCorrections(date: LocalDate? = null, title: Int? = null, errorCorrectedDate: LocalDate? = null): List<Correction>? {
         return try {
-            val response: CorrectionsResponse = httpClient.get("https://www.ecfr.gov/api/admin/v1/corrections.json") {
+            val response: CorrectionsResponse = httpClient.get("${baseUrl}/api/admin/v1/corrections.json") {
                 parameter("date", date)
                 parameter("title", title)
                 parameter("error_corrected_date", errorCorrectedDate)
@@ -76,7 +69,7 @@ class RegulationClient {
 
     suspend fun getCorrectionsForTitle(title: Int): List<Correction>? {
         return try {
-            val response: CorrectionsResponse = httpClient.get("https://www.ecfr.gov/api/admin/v1/corrections/title/$title.json").body()
+            val response: CorrectionsResponse = httpClient.get("${baseUrl}/api/admin/v1/corrections/title/$title.json").body()
             response.corrections
         } catch (e: Exception) {
             e.printStackTrace()
@@ -86,7 +79,7 @@ class RegulationClient {
 
     suspend fun getTitles(): List<Title>? {
         return try {
-            val response: TitlesResponse = httpClient.get("https://www.ecfr.gov/api/versioner/v1/titles.json").body()
+            val response: TitlesResponse = httpClient.get("${baseUrl}/api/versioner/v1/titles.json").body()
             response.titles
         } catch (e: Exception) {
             e.printStackTrace()
@@ -100,7 +93,7 @@ class RegulationClient {
         }
 
         val structure: TitleStructure? = try {
-            val json = httpClient.get("https://www.ecfr.gov/api/versioner/v1/structure/${title.upToDateAsOf!!}/title-${title.number}.json").bodyAsText()
+            val json = httpClient.get("${baseUrl}/api/versioner/v1/structure/${title.upToDateAsOf!!}/title-${title.number}.json").bodyAsText()
             lenientJson.decodeFromString(TitleStructure.serializer(), json)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -116,7 +109,7 @@ class RegulationClient {
 
     suspend fun getTitleContent(title: Title, cfrHierarchy: CfrHierarchy? = null): String? {
         return try {
-            httpClient.get("https://www.ecfr.gov/api/versioner/v1/full/${title.upToDateAsOf!!}/title-${title.number}.xml"){
+            httpClient.get("${baseUrl}/api/versioner/v1/full/${title.upToDateAsOf!!}/title-${title.number}.xml"){
                 accept(ContentType.Application.Xml)
                 cfrHierarchy?.let {
                     parameter("subtitle", it.subtitle)

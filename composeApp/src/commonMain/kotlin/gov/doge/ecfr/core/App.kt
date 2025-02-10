@@ -35,6 +35,9 @@ import gov.doge.ecfr.core.screens.HomeScreen
 import gov.doge.ecfr.core.screens.SearchScreen
 import gov.doge.ecfr.core.screens.TitlesScreen
 import gov.doge.ecfr.theme.AppTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.kodein.emoji.Emoji
@@ -48,7 +51,9 @@ fun App() {
     val appState = remember { AppState() }
 
     LaunchedEffect(appState) {
-        appState.load()
+        CoroutineScope(Dispatchers.Default).launch {
+            appState.load()
+        }
     }
 
     CompositionLocalProvider(LocalAppState provides appState) {
