@@ -50,4 +50,19 @@ data class CfrHierarchy(
     val subjectGroup: String? = null,
     val section: String? = null,
     val appendix: String? = null
-)
+) {
+    override fun toString(): String {
+        return listOfNotNull(
+            title.let { "Title: $it" },
+            subtitle?.let { "Subtitle: $it" },
+            chapter?.let { "Chapter: $it" },
+            subchapter?.let { "Subchapter: $it" },
+            part?.let { "Part: $it" },
+            subpart?.let { "Subpart: $it" },
+            subjectGroup?.let { "Subject Group: $it" },
+            section?.let { "Section: $it" },
+            appendix?.let { "Appendix: $it" }
+        ).joinToString(" | ")
+    }
+
+}

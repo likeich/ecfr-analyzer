@@ -1,7 +1,13 @@
 package gov.doge.ecfr.api.data.models
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 @Serializable
 data class AgenciesResponse(
@@ -21,7 +27,11 @@ data class Agency(
     val children: List<Agency> = emptyList(),
     @SerialName("cfr_references")
     val cfrReferences: List<AgencyCfrReference> = emptyList()
-)
+) {
+    var wordCount: Int by mutableStateOf(0)
+    @Transient
+    var wordCountByReference: SnapshotStateMap<AgencyCfrReference, Int> = mutableStateMapOf()
+}
 
 @Serializable
 data class AgencyCfrReference(

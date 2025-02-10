@@ -2,21 +2,14 @@ package gov.doge.ecfr.api.data.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import nl.adaptivity.xmlutil.serialization.XmlElement
+import nl.adaptivity.xmlutil.serialization.XmlSerialName
 
 @Serializable
 @SerialName("CFRDOC")
 data class CfrDocument(
     @SerialName("AMDDATE") val amendmentDate: String,
-    @SerialName("FMTR") val formatter: Formatter,
     @SerialName("TITLE") val title: DocumentTitle
-)
-
-@Serializable
-@SerialName("FMTR")
-data class Formatter(
-    @SerialName("TITLEPG") val titlePage: TitlePage,
-    @SerialName("BTITLE") val bodyTitle: BodyTitle,
-    @SerialName("TOC") val tableOfContents: TableOfContents
 )
 
 @Serializable

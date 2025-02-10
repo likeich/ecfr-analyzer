@@ -70,6 +70,14 @@ kotlin {
             implementation(libs.voyager.screenModel)
             implementation(libs.voyager.navigator)
             implementation(libs.voyager.transitions)
+
+            implementation(libs.compose.charts)
+
+            implementation(libs.kodein.emoji)
+            implementation(libs.kodein.emoji.compose)
+
+            implementation(libs.xml.util.core)
+            implementation(libs.xml.util.serialization)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
