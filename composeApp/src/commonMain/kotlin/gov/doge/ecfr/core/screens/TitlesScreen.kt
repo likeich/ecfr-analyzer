@@ -117,7 +117,7 @@ object TitlesScreen : DogeScreen() {
 
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(200.dp),
-                userScrollEnabled = true,
+                userScrollEnabled = false,
                 verticalArrangement = Arrangement.spacedBy(Dimensions.defaultPadding),
                 horizontalArrangement = Arrangement.spacedBy(Dimensions.defaultPadding),
                 modifier = Modifier.heightIn(max = 6000.dp)
