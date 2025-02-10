@@ -139,18 +139,13 @@ class RegulationClient {
 
     suspend fun search(query: String): List<SearchResult> {
         return try {
+            // I skipped the url building in Ktor because it built an invalid url, only when run on web
             val manualUrl = baseUrl + "/api/search/v1/results?query=${query.encodeURLParameter()}&per_page=100&order=relevance"
             val manualResponse: SearchResponse = httpClient.get(manualUrl)
                 .also { println("Manual url: $manualUrl") }
                 .body()
 
-            val response: SearchResponse = httpClient.get("${baseUrl}/api/search/v1/results") {
-                accept(ContentType.Application.Json)
-                parameter("query", query)
-                parameter("per_page", 100)
-                parameter("order", "relevance")
-            }.also { println("Url: ${it.request.url}") }.body()
-            response.results
+            manualResponse.results
         } catch (e: Exception) {
             e.printStackTrace()
             emptyList()
