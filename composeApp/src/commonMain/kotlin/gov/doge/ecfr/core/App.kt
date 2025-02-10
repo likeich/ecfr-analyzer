@@ -81,33 +81,7 @@ fun App() {
                     modifier = Modifier.fillMaxSize()
                 )
 
-                when (appState.state) {
-                    is State.Loading -> {
-                        Dialog(onDismissRequest = { }) {
-                            Surface(
-                                shape = MaterialTheme.shapes.medium,
-                                color = MaterialTheme.colorScheme.surface,
-                                tonalElevation = 8.dp
-                            ) {
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(Dimensions.defaultPadding),
-                                    modifier = Modifier.padding(Dimensions.defaultPadding)
-                                ) {
-                                    CircularProgressIndicator(
-                                        modifier = Modifier.size(36.dp)
-                                    )
-                                    Text(
-                                        text = appState.state.message,
-                                        style = MaterialTheme.typography.titleMedium,
-                                        modifier = Modifier.padding(12.dp)
-                                    )
-                                }
-                            }
-                        }
-                    }
-                    else -> {}
-                }
+                LoadingDialog()
             }
         }
     }
@@ -137,6 +111,38 @@ fun TopBar() {
         },
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
     )
+}
+
+@Composable
+fun LoadingDialog() {
+    val appState = LocalAppState.current
+    when (appState.state) {
+        is State.Loading -> {
+            Dialog(onDismissRequest = { }) {
+                Surface(
+                    shape = MaterialTheme.shapes.medium,
+                    color = MaterialTheme.colorScheme.surface,
+                    tonalElevation = 8.dp
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(Dimensions.defaultPadding),
+                        modifier = Modifier.padding(Dimensions.defaultPadding)
+                    ) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(36.dp)
+                        )
+                        Text(
+                            text = appState.state.message,
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.padding(12.dp)
+                        )
+                    }
+                }
+            }
+        }
+        else -> {}
+    }
 }
 
 @Composable

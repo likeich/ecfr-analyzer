@@ -13,6 +13,8 @@ import gov.doge.ecfr.api.data.models.Agency
 import gov.doge.ecfr.api.data.models.Correction
 import gov.doge.ecfr.api.data.models.Title
 import gov.doge.ecfr.utils.mapAsync
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 
 class AppState {
     val client = RegulationClient()
@@ -45,12 +47,12 @@ class AppState {
 
             state = State.Loading("Loading word counts...")
             var agenciesLoaded = 0
-            agencies.chunked(10).forEach {
-                it.mapAsync { agency ->
+            agencies.chunked(10).forEach { chunk ->
+                chunk.mapAsync(scope = CoroutineScope(Dispatchers.Default), maxConcurrent = 10) { agency ->
                     agency.wordCount = client.getWordCountForAgency(agency, titles)
                 }.await()
 
-                agenciesLoaded += it.size
+                agenciesLoaded += chunk.size
                 state = State.Loading("Loading word counts... $agenciesLoaded/${agencies.size}")
                 averageWordCount = agencies.filter { it.wordCount > 0 }.map { it.wordCount }.average().toInt()
             }

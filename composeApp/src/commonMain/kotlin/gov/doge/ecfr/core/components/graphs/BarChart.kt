@@ -79,7 +79,7 @@ fun <T> BarChart(
                         blurRadius = 10f
                     )
                 ),
-                count = IndicatorCount.CountBased(5),
+                count = IndicatorCount.CountBased(6),
                 contentBuilder = { double ->
                     double.toReadableString()
                 }

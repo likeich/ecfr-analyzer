@@ -17,6 +17,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.sync.Semaphore
+import kotlinx.coroutines.sync.withPermit
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -35,12 +37,21 @@ inline fun <T> Iterable<T>.forEachAsync(
     }
 }
 
+@OptIn(DelicateCoroutinesApi::class)
 inline fun <T, R> Iterable<T>.mapAsync(
     scope: CoroutineScope = GlobalScope,
+    maxConcurrent: Int = 10,
     crossinline transform: suspend (T) -> R
 ): Deferred<List<R>> {
+    val semaphore = Semaphore(maxConcurrent)
     return scope.async {
-        map { item -> async { transform(item) } }.awaitAll()
+        map { item ->
+            async {
+                semaphore.withPermit {
+                    transform(item)
+                }
+            }
+        }.awaitAll()
     }
 }
 
