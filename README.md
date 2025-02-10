@@ -17,4 +17,4 @@ Features
 
 ![Screenshot 2025-02-10 at 03 05 05](https://github.com/user-attachments/assets/837480a0-ee59-49ff-9186-2341fcd48854)
 
-![Screenshot 2025-02-10 at 03 05 10](https://github.com/user-attachments/assets/0dd5f6f7-0f44-4c5c-9821-4dc8836b61f0)
+![Screenshot 2025-02-10 at 03 12 15](https://github.com/user-attachments/assets/74fb5c0d-3eb6-4960-9946-4956c28faed9)
