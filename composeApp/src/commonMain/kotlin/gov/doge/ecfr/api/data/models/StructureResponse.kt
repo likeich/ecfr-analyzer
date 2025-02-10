@@ -6,12 +6,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class TitleStructure(
     @SerialName("identifier") val id: String = "",
-    @SerialName("label") val label: String,
-    @SerialName("label_level") val labelLevel: String,
-    @SerialName("label_description") val labelDescription: String,
-    @SerialName("reserved") val isReserved: Boolean,
-    @SerialName("type") val type: String,
-    @SerialName("size") val size: Int,
+    @SerialName("label") val label: String? = null,
+    @SerialName("label_level") val labelLevel: String? = null,
+    @SerialName("label_description") val labelDescription: String? = null,
+    @SerialName("reserved") val isReserved: Boolean = false,
+    @SerialName("type") val type: String? = null,
+    @SerialName("size") val size: Int = 0,
     @SerialName("children") val children: List<TitleStructure> = emptyList(),
     @SerialName("descendant_range") val descendantRange: String? = null,
     @SerialName("received_on") val receivedOn: String? = null

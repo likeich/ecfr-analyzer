@@ -18,8 +18,11 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.accept
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import io.ktor.client.request.url
 import io.ktor.client.statement.bodyAsText
+import io.ktor.client.statement.request
 import io.ktor.http.ContentType
+import io.ktor.http.encodeURLParameter
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.Dispatchers
 import kotlinx.datetime.LocalDate
@@ -136,11 +139,17 @@ class RegulationClient {
 
     suspend fun search(query: String): List<SearchResult> {
         return try {
+            val manualUrl = baseUrl + "/api/search/v1/results?query=${query.encodeURLParameter()}&per_page=100&order=relevance"
+            val manualResponse: SearchResponse = httpClient.get(manualUrl)
+                .also { println("Manual url: $manualUrl") }
+                .body()
+
             val response: SearchResponse = httpClient.get("${baseUrl}/api/search/v1/results") {
+                accept(ContentType.Application.Json)
                 parameter("query", query)
                 parameter("per_page", 100)
                 parameter("order", "relevance")
-            }.body()
+            }.also { println("Url: ${it.request.url}") }.body()
             response.results
         } catch (e: Exception) {
             e.printStackTrace()

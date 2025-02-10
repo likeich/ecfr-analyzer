@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class TitlesResponse(
-    val titles: List<Title>,
-    val meta: Meta
+    val titles: List<Title> = emptyList(),
+    val meta: Meta? = null
 )
 
 @Serializable
