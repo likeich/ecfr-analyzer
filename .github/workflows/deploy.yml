@@ -39,5 +39,5 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: build/dist/wasmJs/productionExecutable
+          folder: composeApp/build/dist/wasmJs/productionExecutable
           clean: true
