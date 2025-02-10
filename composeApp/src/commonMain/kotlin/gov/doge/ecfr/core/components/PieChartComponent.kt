@@ -3,12 +3,14 @@ package gov.doge.ecfr.core.components
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import gov.doge.ecfr.core.components.graphs.GraphCard
 import gov.doge.ecfr.utils.toColor
 import ir.ehsannarmani.compose_charts.PieChart
 import ir.ehsannarmani.compose_charts.models.Pie
@@ -38,10 +40,11 @@ fun <T> PieChartComponent(
     }
 
     GraphCard(
-        title = title
+        title = title,
+        modifier = modifier
     ) {
         PieChart(
-            modifier = modifier,
+            modifier = Modifier.fillMaxSize(),
             data = data.map {
                 val label = if (selectedItem != null) labelExtractor(selectedItem) else null
                 it.copy(selected = it.label == label)

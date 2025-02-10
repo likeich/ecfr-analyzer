@@ -25,7 +25,7 @@ import ecfranalyzer.composeapp.generated.resources.Res
 import ecfranalyzer.composeapp.generated.resources.house_fill
 import gov.doge.ecfr.core.LocalAppState
 import gov.doge.ecfr.core.components.AgencyInformation
-import gov.doge.ecfr.core.components.BarChart
+import gov.doge.ecfr.core.components.graphs.BarChart
 import gov.doge.ecfr.core.components.EnumDropdownButton
 import gov.doge.ecfr.core.components.LimitedColumn
 import gov.doge.ecfr.core.components.PieChartComponent
@@ -65,7 +65,7 @@ object HomeScreen : DogeScreen() {
                 PieChartComponent(
                     items = topAgencies,
                     selectedItem = screenModel.selectedAgency,
-                    modifier = Modifier.size(250.dp),
+                    modifier = Modifier.size(Dimensions.chartSize),
                     title = "Agency Word Count",
                     labelExtractor = { it.shortName ?: it.displayName },
                     valueExtractor = { it.wordCount.toDouble() },
@@ -82,7 +82,7 @@ object HomeScreen : DogeScreen() {
                 BarChart(
                     items = topAgencies,
                     selectedItem = screenModel.selectedAgency,
-                    modifier = Modifier.size(250.dp),
+                    modifier = Modifier.size(Dimensions.chartSize),
                     title = "Agency Word Count",
                     labelExtractor = { it.shortName ?: it.displayName },
                     valueExtractor = { it.wordCount.toDouble() },

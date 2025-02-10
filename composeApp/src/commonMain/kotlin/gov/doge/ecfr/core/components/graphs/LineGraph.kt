@@ -1,5 +1,6 @@
-package gov.doge.ecfr.core.components
+package gov.doge.ecfr.core.components.graphs
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -10,61 +11,53 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
-import gov.doge.ecfr.utils.toColor
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import gov.doge.ecfr.utils.toReadableString
-import ir.ehsannarmani.compose_charts.ColumnChart
+import ir.ehsannarmani.compose_charts.LineChart
 import ir.ehsannarmani.compose_charts.models.AnimationMode
-import ir.ehsannarmani.compose_charts.models.Bars
 import ir.ehsannarmani.compose_charts.models.HorizontalIndicatorProperties
 import ir.ehsannarmani.compose_charts.models.IndicatorCount
 import ir.ehsannarmani.compose_charts.models.LabelHelperProperties
 import ir.ehsannarmani.compose_charts.models.LabelProperties
+import ir.ehsannarmani.compose_charts.models.Line
 
 @Composable
-fun <T> BarChart(
+fun <T> LineGraph(
     items: List<T>,
-    selectedItem: T? = null,
+    labels: List<String> = emptyList(),
     modifier: Modifier = Modifier,
     title: String = "Chart",
-    labelExtractor: (T) -> String,
     valueExtractor: (T) -> Double,
-    colorExtractor: (T) -> Color = { labelExtractor(it).toColor() },
-    onBarClick: (String?) -> Unit = {}
+    color: Color = MaterialTheme.colorScheme.primary,
 ) {
     if (items.isEmpty()) return
 
     val data by remember(items) {
         mutableStateOf(
-            items.map {
-                Bars(
-                    label = labelExtractor(it),
-                    values = listOf(
-                        Bars.Data(
-                            label = labelExtractor(it),
-                            value = valueExtractor(it),
-                            color = SolidColor(colorExtractor(it))
-                        )
-                    )
+            listOf(
+                Line(
+                    label = title,
+                    values = items.map { valueExtractor(it) },
+                    color = SolidColor(color),
+                    firstGradientFillColor = color.copy(alpha = 0.5f),
+                    secondGradientFillColor = Color.Transparent
                 )
-            }
+            )
         )
     }
 
-    GraphCard(title = title) {
-        ColumnChart(
-            modifier = modifier,
+    GraphCard(title = title, modifier = modifier) {
+        LineChart(
+            modifier = Modifier.fillMaxSize(),
             data = data,
-            onBarClick = { bar ->
-                if (selectedItem != null && labelExtractor(selectedItem) == bar.label) {
-                    onBarClick(null)
-                } else {
-                    onBarClick(bar.label)
-                }
-            },
             animationMode = AnimationMode.Together { it * 50L },
             labelProperties = LabelProperties(
-                textStyle = TextStyle.Default.copy(color = MaterialTheme.colorScheme.onSurface),
+                textStyle = TextStyle.Default.copy(color = MaterialTheme.colorScheme.onSurface, fontSize = 10.sp),
                 enabled = true,
+                labels = labels,
+                padding = 2.dp,
+                rotation = LabelProperties.Rotation(mode = LabelProperties.Rotation.Mode.Force)
             ),
             indicatorProperties = HorizontalIndicatorProperties(
                 enabled = true,
@@ -81,9 +74,9 @@ fun <T> BarChart(
                 }
             ),
             labelHelperProperties = LabelHelperProperties(
-                enabled = false,
+                enabled = true,
                 textStyle = TextStyle.Default.copy(color = MaterialTheme.colorScheme.onSurface)
-            ),
+            )
         )
     }
 }

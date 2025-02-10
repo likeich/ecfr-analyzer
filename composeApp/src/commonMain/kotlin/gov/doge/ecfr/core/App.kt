@@ -32,6 +32,7 @@ import ecfranalyzer.composeapp.generated.resources.Res
 import ecfranalyzer.composeapp.generated.resources.doge_logo
 import gov.doge.ecfr.core.screens.AboutScreen
 import gov.doge.ecfr.core.screens.HomeScreen
+import gov.doge.ecfr.core.screens.SearchScreen
 import gov.doge.ecfr.core.screens.TitlesScreen
 import gov.doge.ecfr.theme.AppTheme
 import org.jetbrains.compose.resources.painterResource
@@ -127,7 +128,7 @@ fun StateView() {
 @Composable
 fun BottomBar() {
     val navigator = LocalNavigator.currentOrThrow
-    val screens = listOf(HomeScreen, TitlesScreen, AboutScreen)
+    val screens = listOf(HomeScreen, TitlesScreen, SearchScreen, AboutScreen)
 
     NavigationBar {
         screens.forEach { screen ->

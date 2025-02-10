@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.size
@@ -13,7 +12,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,13 +23,13 @@ import cafe.adriel.voyager.core.model.rememberScreenModel
 import ecfranalyzer.composeapp.generated.resources.Res
 import ecfranalyzer.composeapp.generated.resources.books_fill
 import gov.doge.ecfr.core.LocalAppState
-import gov.doge.ecfr.core.components.BarChart
+import gov.doge.ecfr.core.components.graphs.BarChart
 import gov.doge.ecfr.core.components.EnumDropdownButton
 import gov.doge.ecfr.core.components.LimitedColumn
+import gov.doge.ecfr.core.components.graphs.LineGraph
 import gov.doge.ecfr.core.components.PieChartComponent
 import gov.doge.ecfr.core.components.SimpleCard
 import gov.doge.ecfr.core.screenmodels.FilterBy
-import gov.doge.ecfr.core.screenmodels.HomeScreenModel
 import gov.doge.ecfr.core.screenmodels.SortBy
 import gov.doge.ecfr.core.screenmodels.TitlesScreenModel
 import gov.doge.ecfr.theme.Dimensions
@@ -47,7 +45,14 @@ object TitlesScreen : DogeScreen() {
     override fun Content() {
         val appState = LocalAppState.current
         val screenModel = rememberScreenModel { TitlesScreenModel() }
-        val topTitles by remember(appState.titles.size, screenModel.filterBy, screenModel.sortBy) {
+        val topTitles by remember(
+            appState.titles.size,
+            appState.corrections.size,
+            appState.titleCorrections.size,
+            screenModel.selectedTitle,
+            screenModel.filterBy,
+            screenModel.sortBy
+        ) {
             mutableStateOf(screenModel.getFilteredTitles(appState.titles, appState))
         }
         val sortedTitles = screenModel.sortTitles(appState.titles, appState)
@@ -63,7 +68,7 @@ object TitlesScreen : DogeScreen() {
                 PieChartComponent(
                     items = topTitles,
                     selectedItem = screenModel.selectedTitle,
-                    modifier = Modifier.size(250.dp),
+                    modifier = Modifier.size(Dimensions.chartSize),
                     title = "Corrections by Title",
                     labelExtractor = { it.number.toString() },
                     valueExtractor = { title ->
@@ -82,7 +87,7 @@ object TitlesScreen : DogeScreen() {
                 BarChart(
                     items = topTitles,
                     selectedItem = screenModel.selectedTitle,
-                    modifier = Modifier.size(250.dp),
+                    modifier = Modifier.size(Dimensions.chartSize),
                     title = "Corrections by Title",
                     labelExtractor = { it.number.toString() },
                     valueExtractor = { title ->
@@ -96,6 +101,15 @@ object TitlesScreen : DogeScreen() {
                             screenModel.onTitleSelected(appState.titles.find { it.number.toString() == label })
                         }
                     }
+                )
+
+                val corrections = screenModel.getFilteredCorrections(appState).groupBy { it.date.year }
+                LineGraph(
+                    items = corrections.entries.sortedBy { it.key }.map { it.value },
+                    labels = corrections.keys.toList().sorted().map { it.toString() },
+                    modifier = Modifier.size(Dimensions.chartSize),
+                    title = "Corrections Over Time",
+                    valueExtractor = { it.size.toDouble() },
                 )
             }
 

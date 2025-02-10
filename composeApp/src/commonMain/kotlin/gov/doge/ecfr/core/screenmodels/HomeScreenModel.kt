@@ -22,12 +22,14 @@ class HomeScreenModel : ScreenModel {
     fun getFilteredAgencies(allAgencies: List<Agency>): List<Agency> {
         val sortedAgencies = sortAgencies(allAgencies)
 
-        return when (filterBy) {
+        val filtered = when (filterBy) {
             FilterBy.TOP_5 -> sortedAgencies.take(5)
             FilterBy.TOP_10 -> sortedAgencies.take(10)
             FilterBy.TOP_25 -> sortedAgencies.take(25)
             FilterBy.ALL -> sortedAgencies
-        }
+        } + listOfNotNull(selectedAgency)
+
+        return filtered.distinct()
     }
 
     fun onAgencySelected(agency: Agency?) {
@@ -39,12 +41,12 @@ enum class SortBy {
     NAME,
     WORD_COUNT,
     CORRECTION_COUNT,
-    DATE,
+    DATE
 }
 
 enum class FilterBy {
     TOP_5,
     TOP_10,
     TOP_25,
-    ALL,
+    ALL
 }

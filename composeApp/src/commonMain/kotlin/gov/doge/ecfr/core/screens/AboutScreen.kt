@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ecfranalyzer.composeapp.generated.resources.Res
+import ecfranalyzer.composeapp.generated.resources.doge
 import ecfranalyzer.composeapp.generated.resources.doge_logo
 import ecfranalyzer.composeapp.generated.resources.question_fill
 import gov.doge.ecfr.utils.getCurrentYear
@@ -34,6 +35,11 @@ object AboutScreen : DogeScreen() {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
+                Image(
+                    painter = painterResource(Res.drawable.doge),
+                    contentDescription = "Doge Logo",
+                    modifier = Modifier.size(200.dp)
+                )
                 Text(
                     text = "Doge eCFR Analyzer",
                     style = MaterialTheme.typography.titleLarge,
@@ -42,11 +48,6 @@ object AboutScreen : DogeScreen() {
                 Text(
                     text = "Created by 1LT Kyle Eichlin © ${getCurrentYear()}",
                     style = MaterialTheme.typography.bodyMedium
-                )
-                Image(
-                    painter = painterResource(Res.drawable.doge_logo),
-                    contentDescription = "Doge Logo",
-                    modifier = Modifier.size(100.dp)
                 )
             }
         }

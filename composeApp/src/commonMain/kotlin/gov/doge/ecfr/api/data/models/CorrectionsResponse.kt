@@ -1,5 +1,6 @@
 package gov.doge.ecfr.api.data.models
 
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -29,7 +30,9 @@ data class Correction(
     val year: Int,
     @SerialName("last_modified")
     val lastModified: String
-)
+) {
+    val date = LocalDate.parse(errorCorrected)
+}
 
 @Serializable
 data class CorrectionCfrReference(
