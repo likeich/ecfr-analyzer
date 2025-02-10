@@ -1,0 +1,40 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Only deploy when main branch is updated
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java (Required for Kotlin)
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Node.js (For WASM JS Builds)
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Set up Kotlin and Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Build the project
+        run: ./gradlew wasmJsBrowserDistribution  # Adjust for your KMP output
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: build/dist/js/productionExecutable/kotlin  # Adjust based on your build
+          clean: true  # Deletes old files before deploying
