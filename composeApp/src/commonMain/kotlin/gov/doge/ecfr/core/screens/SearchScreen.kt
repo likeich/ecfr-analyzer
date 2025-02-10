@@ -34,6 +34,7 @@ import org.jetbrains.compose.resources.DrawableResource
 import org.kodein.emoji.Emoji
 import org.kodein.emoji.compose.m3.TextWithNotoImageEmoji
 import org.kodein.emoji.objects.light_video.MagnifyingGlassTiltedRight
+import org.kodein.emoji.objects.tool.Link
 
 object SearchScreen : DogeScreen() {
     override val icon = Res.drawable.binoculars_fill
@@ -80,7 +81,7 @@ object SearchScreen : DogeScreen() {
                     modifier = Modifier.padding(horizontal = Dimensions.defaultPadding)
                 ) {
                     SimpleCard(
-                        title = result.hierarchy.toReadableString(),
+                        title = result.hierarchy.toReadableString() + " ${Emoji.Link}",
                         subtitle = result.fullTextExcerpt ?: result.type,
                         onClick = { uriHandler.openUri(result.hierarchy.toUrl()) }
                     )

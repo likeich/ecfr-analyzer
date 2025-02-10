@@ -29,6 +29,7 @@ import gov.doge.ecfr.core.components.LimitedColumn
 import gov.doge.ecfr.core.components.graphs.LineGraph
 import gov.doge.ecfr.core.components.graphs.PieChartComponent
 import gov.doge.ecfr.core.components.SimpleCard
+import gov.doge.ecfr.core.screenmodels.Direction
 import gov.doge.ecfr.core.screenmodels.FilterBy
 import gov.doge.ecfr.core.screenmodels.SortBy
 import gov.doge.ecfr.core.screenmodels.TitlesScreenModel
@@ -51,7 +52,8 @@ object TitlesScreen : DogeScreen() {
             appState.titleCorrections.size,
             screenModel.selectedTitle,
             screenModel.filterBy,
-            screenModel.sortBy
+            screenModel.sortBy,
+            screenModel.sortDirection
         ) {
             mutableStateOf(screenModel.getFilteredTitles(appState.titles, appState))
         }
@@ -124,7 +126,7 @@ object TitlesScreen : DogeScreen() {
                     val corrections = appState.titleCorrections[title] ?: emptyList()
                     SimpleCard(
                         title = "${title.number} - ${title.name}",
-                        subtitle = "${corrections.size} corrections",
+                        subtitle = "${corrections.size} corrections - ${title.latestIssueDate ?: ""}",
                         active = topTitles.contains(title),
                         selected = screenModel.selectedTitle == title,
                         onClick = { screenModel.onTitleSelected(title) }
@@ -147,6 +149,12 @@ fun SortAndFilterOptions(screenModel: TitlesScreenModel) {
             options = arrayOf(SortBy.NAME, SortBy.CORRECTION_COUNT, SortBy.DATE),
             onOptionSelected = { screenModel.sortBy = it },
             selectedOption = screenModel.sortBy
+        )
+        EnumDropdownButton(
+            label = "Sort Direction",
+            options = Direction.entries.toTypedArray(),
+            onOptionSelected = { screenModel.sortDirection = it },
+            selectedOption = screenModel.sortDirection
         )
         EnumDropdownButton(
             label = "Filter by",

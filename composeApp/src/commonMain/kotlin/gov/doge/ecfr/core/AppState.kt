@@ -45,15 +45,15 @@ class AppState {
                 corrections.filter { it.title == title.number }
             })
 
-            state = State.Loading("Loading word counts...")
+            state = State.Loading("Loading agency information...")
             var agenciesLoaded = 0
-            agencies.chunked(10).forEach { chunk ->
+            agencies.chunked(8).forEach { chunk ->
                 chunk.mapAsync(scope = CoroutineScope(Dispatchers.Default), maxConcurrent = 10) { agency ->
                     agency.wordCount = client.getWordCountForAgency(agency, titles)
                 }.await()
 
                 agenciesLoaded += chunk.size
-                state = State.Loading("Loading word counts... $agenciesLoaded/${agencies.size}")
+                state = State.Loading("Loading agency information... $agenciesLoaded/${agencies.size}")
                 averageWordCount = agencies.filter { it.wordCount > 0 }.map { it.wordCount }.average().toInt()
             }
         } catch (e: Exception) {

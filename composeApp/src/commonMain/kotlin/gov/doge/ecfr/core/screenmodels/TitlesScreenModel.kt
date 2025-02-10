@@ -9,18 +9,25 @@ import gov.doge.ecfr.api.data.models.Title
 import gov.doge.ecfr.core.AppState
 
 class TitlesScreenModel : ScreenModel {
+    var sortDirection: Direction by mutableStateOf(Direction.ASCENDING)
     var sortBy: SortBy by mutableStateOf(SortBy.NAME)
     var filterBy: FilterBy by mutableStateOf(FilterBy.TOP_5)
     var selectedTitle: Title? by mutableStateOf(null)
 
     fun sortTitles(allTitles: List<Title>, appState: AppState): List<Title> {
-        return when (sortBy) {
+        val typeSort = when (sortBy) {
             SortBy.NAME -> allTitles.sortedBy { it.number }
-            SortBy.CORRECTION_COUNT -> allTitles.sortedByDescending {
+            SortBy.CORRECTION_COUNT -> allTitles.sortedBy {
                 appState.titleCorrections[it]?.size ?: 0
             }
-            SortBy.DATE -> allTitles.sortedByDescending { it.latestIssueDate }
+            SortBy.DATE -> allTitles.sortedBy { it.latestIssueDate }
             else -> allTitles.sortedBy { it.number }
+        }
+
+        return if (sortDirection == Direction.ASCENDING) {
+            typeSort
+        } else {
+            typeSort.reversed()
         }
     }
 

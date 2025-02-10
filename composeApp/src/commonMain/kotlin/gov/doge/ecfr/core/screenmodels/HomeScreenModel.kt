@@ -8,14 +8,21 @@ import gov.doge.ecfr.api.data.models.Agency
 
 class HomeScreenModel : ScreenModel {
     var sortBy: SortBy by mutableStateOf(SortBy.WORD_COUNT)
+    var sortDirection: Direction by mutableStateOf(Direction.DESCENDING)
     var filterBy: FilterBy by mutableStateOf(FilterBy.TOP_5)
     var selectedAgency: Agency? by mutableStateOf(null)
 
     fun sortAgencies(allAgencies: List<Agency>): List<Agency> {
-        return when (sortBy) {
-            SortBy.NAME -> allAgencies.sortedBy { it.sortableName }
-            SortBy.WORD_COUNT -> allAgencies.sortedByDescending { it.wordCount }
+        val typeSort = when (sortBy) {
+            SortBy.NAME -> allAgencies.sortedByDescending { it.sortableName }
+            SortBy.WORD_COUNT -> allAgencies.sortedBy { it.wordCount }
             else -> allAgencies
+        }
+
+        return if (sortDirection == Direction.ASCENDING) {
+            typeSort
+        } else {
+            typeSort.reversed()
         }
     }
 
@@ -49,4 +56,9 @@ enum class FilterBy {
     TOP_10,
     TOP_25,
     ALL
+}
+
+enum class Direction {
+    ASCENDING,
+    DESCENDING
 }

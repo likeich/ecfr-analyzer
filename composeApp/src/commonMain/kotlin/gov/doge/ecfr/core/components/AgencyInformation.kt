@@ -23,13 +23,13 @@ fun AgencyInformation(agency: Agency, modifier: Modifier = Modifier) {
             modifier = Modifier.padding(Dimensions.defaultPadding)
         ) {
             Text(
-                text = "${agency.displayName} - ${agency.shortName ?: "Information"}",
+                text = "${agency.displayName} - ${agency.requireShortName}",
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
             if (agency.children.isNotEmpty()) {
                 Text(
-                    text = "Child Agencies: ${agency.children.joinToString("\n") { "${it.displayName} - ${it.shortName}" }}",
+                    text = "Child Agencies: ${agency.children.joinToString("\n") { "${it.displayName} - ${it.requireShortName}" }}",
                 )
             }
             Text(

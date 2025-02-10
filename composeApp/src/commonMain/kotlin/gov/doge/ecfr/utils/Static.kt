@@ -127,3 +127,15 @@ fun parseHtmlToAnnotatedString(text: String): AnnotatedString {
         }
     }
 }
+
+fun String.toAcronym(): String {
+    val ignoredWords = setOf("of", "and", "the", "in", "on", "at", "to", "for", "by", "with")
+
+    val acronym = this.split(Regex("\\s+"))
+        .filter { it.isNotEmpty() && it.lowercase() !in ignoredWords }
+        .map { it.first().uppercase() }
+        .joinToString("")
+
+    return acronym.ifBlank { this }
+}
+

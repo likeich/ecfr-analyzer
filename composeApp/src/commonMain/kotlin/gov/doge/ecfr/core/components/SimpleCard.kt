@@ -53,7 +53,7 @@ fun SimpleCard(
                 verticalArrangement = Arrangement.spacedBy(Dimensions.smallPadding),
                 modifier = Modifier.weight(1f)
             ) {
-                Text(
+                TextWithNotoImageEmoji(
                     text = title,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,

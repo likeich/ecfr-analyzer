@@ -7,7 +7,7 @@ import gov.doge.ecfr.core.App
 fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
-        title = "eCFRAnalyzer",
+        title = "eCFR Analyzer",
     ) {
         App()
     }

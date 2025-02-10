@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateMap
+import gov.doge.ecfr.utils.toAcronym
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
@@ -31,6 +32,23 @@ data class Agency(
     var wordCount: Int by mutableStateOf(0)
     @Transient
     var wordCountByReference: SnapshotStateMap<AgencyCfrReference, Int> = mutableStateMapOf()
+    val requireShortName: String
+        get() {
+            val short = if (shortName.isNullOrBlank()) {
+                displayName.toAcronym()
+            } else {
+                // Some short names are actually not at all
+                if (shortName.contains(" ")) {
+                    shortName.toAcronym()
+                } else {
+                    shortName
+                }
+            }
+
+            return short.ifBlank {
+                displayName.toAcronym()
+            }
+        }
 }
 
 @Serializable

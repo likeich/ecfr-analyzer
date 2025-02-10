@@ -30,6 +30,7 @@ import gov.doge.ecfr.core.components.EnumDropdownButton
 import gov.doge.ecfr.core.components.LimitedColumn
 import gov.doge.ecfr.core.components.graphs.PieChartComponent
 import gov.doge.ecfr.core.components.SimpleCard
+import gov.doge.ecfr.core.screenmodels.Direction
 import gov.doge.ecfr.core.screenmodels.FilterBy
 import gov.doge.ecfr.core.screenmodels.HomeScreenModel
 import gov.doge.ecfr.core.screenmodels.SortBy
@@ -46,7 +47,12 @@ object HomeScreen : DogeScreen() {
     override fun Content() {
         val screenModel = rememberScreenModel { HomeScreenModel() }
         val appState = LocalAppState.current
-        val topAgencies by remember(appState.agencies.map { it.wordCount }, screenModel.sortBy, screenModel.filterBy) {
+        val topAgencies by remember(
+            appState.agencies.map { it.wordCount },
+            screenModel.sortBy,
+            screenModel.sortDirection,
+            screenModel.filterBy
+        ) {
             mutableStateOf(screenModel.getFilteredAgencies(appState.agencies))
         }
         val sortedAgencies = screenModel.sortAgencies(appState.agencies)
@@ -65,14 +71,14 @@ object HomeScreen : DogeScreen() {
                     selectedItem = screenModel.selectedAgency,
                     modifier = Modifier.size(Dimensions.chartSize),
                     title = "Agency Word Count",
-                    labelExtractor = { it.shortName ?: it.displayName },
+                    labelExtractor = { it.requireShortName },
                     valueExtractor = { it.wordCount.toDouble() },
                     colorExtractor = { it.displayName.toColor() },
                     onPieClick = { label ->
                         if (label == null) {
                             screenModel.onAgencySelected(null)
                         } else {
-                            screenModel.onAgencySelected(appState.agencies.find { (it.shortName ?: it.displayName) == label })
+                            screenModel.onAgencySelected(appState.agencies.find { it.requireShortName == label })
                         }
                     }
                 )
@@ -82,14 +88,14 @@ object HomeScreen : DogeScreen() {
                     selectedItem = screenModel.selectedAgency,
                     modifier = Modifier.size(Dimensions.chartSize),
                     title = "Agency Word Count",
-                    labelExtractor = { it.shortName ?: it.displayName },
+                    labelExtractor = { it.requireShortName },
                     valueExtractor = { it.wordCount.toDouble() },
                     colorExtractor = { it.displayName.toColor() },
                     onBarClick = { label ->
                         if (label == null) {
                             screenModel.onAgencySelected(null)
                         } else {
-                            screenModel.onAgencySelected(appState.agencies.find { (it.shortName ?: it.displayName) == label })
+                            screenModel.onAgencySelected(appState.agencies.find { it.requireShortName == label })
                         }
                     }
                 )
@@ -136,6 +142,12 @@ fun SortAndFilterOptions(screenModel: HomeScreenModel) {
             options = arrayOf(SortBy.WORD_COUNT, SortBy.NAME),
             onOptionSelected = { screenModel.sortBy = it },
             selectedOption = screenModel.sortBy
+        )
+        EnumDropdownButton(
+            label = "Sort Direction",
+            options = Direction.entries.toTypedArray(),
+            onOptionSelected = { screenModel.sortDirection = it },
+            selectedOption = screenModel.sortDirection
         )
         EnumDropdownButton(
             label = "Filter by",
