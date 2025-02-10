@@ -5,3 +5,9 @@ html, body {
     padding: 0;
     overflow: hidden;
 }
+
+canvas {
+    outline: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
