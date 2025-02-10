@@ -41,7 +41,7 @@ object AboutScreen : DogeScreen() {
                     modifier = Modifier.size(200.dp)
                 )
                 Text(
-                    text = "Doge eCFR Analyzer",
+                    text = "DOGE eCFR Analyzer",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
