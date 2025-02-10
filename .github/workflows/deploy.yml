@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Only deploy when main branch is updated
+      - main
 
 jobs:
   build-and-deploy:
@@ -29,12 +29,21 @@ jobs:
       - name: Set up Kotlin and Gradle
         uses: gradle/gradle-build-action@v2
 
+      - name: Upgrade Yarn Lock
+        run: ./gradlew kotlinUpgradeYarnLock
+
+      - name: Commit Updated Yarn Lock (Optional)
+        run: |
+          git add yarn.lock
+          git commit -m "Auto-update yarn.lock"
+          git push origin main || echo "No changes to push"
+
       - name: Build the project
-        run: ./gradlew wasmJsBrowserDistribution  # Adjust for your KMP output
+        run: ./gradlew wasmJsBrowserDistribution
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: build/dist/js/productionExecutable/kotlin  # Adjust based on your build
-          clean: true  # Deletes old files before deploying
+          folder: build/dist/wasmJs/productionExecutable
+          clean: true
