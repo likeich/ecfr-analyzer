@@ -32,12 +32,6 @@ jobs:
       - name: Upgrade Yarn Lock
         run: ./gradlew kotlinUpgradeYarnLock
 
-      - name: Commit Updated Yarn Lock (Optional)
-        run: |
-          git add yarn.lock
-          git commit -m "Auto-update yarn.lock"
-          git push origin main || echo "No changes to push"
-
       - name: Build the project
         run: ./gradlew wasmJsBrowserDistribution
 
