@@ -54,20 +54,6 @@ data class CfrHierarchy(
     val section: String? = null,
     val appendix: String? = null
 ) {
-    override fun toString(): String {
-        return listOfNotNull(
-            title.let { "Title: $it" },
-            subtitle?.let { "Subtitle: $it" },
-            chapter?.let { "Chapter: $it" },
-            subchapter?.let { "Subchapter: $it" },
-            part?.let { "Part: $it" },
-            subpart?.let { "Subpart: $it" },
-            subjectGroup?.let { "Subject Group: $it" },
-            section?.let { "Section: $it" },
-            appendix?.let { "Appendix: $it" }
-        ).joinToString(" | ")
-    }
-
     fun toReadableString(): String {
         return listOfNotNull(
             title.let { "Title: $it" },
@@ -83,15 +69,18 @@ data class CfrHierarchy(
 
     // Example: https://www.ecfr.gov/current/title-7/subtitle-B/chapter-I/subchapter-A/part-28/subpart-E/subject-group-ECFR6f664639cfb67fd/section-28.952
     fun toUrl(): String {
-        val url = "https://www.ecfr.gov/current/title-${title}/" +
-                subtitle?.let { "subtitle-${it}/" } +
-                chapter?.let { "chapter-${it}/" } +
-                subchapter?.let { "subchapter-${it}/" } +
-                part?.let { "part-${it}/" } +
-                subpart?.let { "subpart-${it}/" } +
-                subjectGroup?.let { "subject-group-${it}/" } +
-                section?.let { "section-${it}/" } +
-                appendix?.let { "appendix-${it}/" }
-        return url.replace("/null", "/")
+        val baseUrl = "https://www.ecfr.gov/current/title-$title"
+        val list = listOfNotNull(
+            subtitle?.let { "subtitle-$it" },
+            chapter?.let { "chapter-$it" },
+            subchapter?.let { "subchapter-$it" },
+            part?.let { "part-$it" },
+            subpart?.let { "subpart-$it" },
+            subjectGroup?.let { "subject-group-$it" },
+            section?.let { "section-$it" },
+            appendix?.let { "appendix-$it" }
+        )
+
+        return list.joinToString("/", prefix = "$baseUrl/")
     }
 }

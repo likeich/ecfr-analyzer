@@ -33,7 +33,7 @@ fun AgencyInformation(agency: Agency, modifier: Modifier = Modifier) {
                 )
             }
             Text(
-                text = "CFR References:\n${agency.cfrReferences.joinToString(separator = "\n") { it.toCfrHierarchy().toString() }}"
+                text = "CFR References:\n${agency.cfrReferences.joinToString(separator = "\n") { it.toCfrHierarchy().toReadableString() }}"
             )
         }
     }

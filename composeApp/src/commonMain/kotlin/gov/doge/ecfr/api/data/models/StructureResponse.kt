@@ -32,9 +32,12 @@ data class TitleStructure(
         var current: TitleStructure? = this
 
         for (part in hierarchyParts) {
-            current = current?.children?.firstOrNull { it.id == part }
-            if (current == null) {
-                return null
+            val foundChild = current?.children?.firstOrNull { it.id == part }
+            if (foundChild == null) { // Some parts are skipped (ex: Title 2, Chapter IV skips subtitle)
+                val grandchildren = current?.children?.map { it.children }?.flatten()
+                current = grandchildren?.firstOrNull { it.id == part }
+            } else {
+                current = foundChild
             }
         }
         return current

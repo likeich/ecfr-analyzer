@@ -15,13 +15,17 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.accept
 import io.ktor.client.request.get
+import io.ktor.client.request.headers
 import io.ktor.client.request.parameter
 import io.ktor.client.request.url
+import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.client.statement.request
 import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
 import io.ktor.http.encodeURLParameter
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.Dispatchers
@@ -164,9 +168,15 @@ class RegulationClient {
     suspend fun getWordCountForAgency(agency: Agency, titles: List<Title>): Int {
         val cfrReferences = agency.cfrReferences.map { it.toCfrHierarchy() }
         return cfrReferences.sumOf { reference ->
-            val title = titles.find { reference.title == it.number.toString() }!!
-            val structure = getTitleStructure(title)!!
-            structure.findChild(reference)?.wordCount ?: 0
+            try {
+                val title = titles.find { reference.title == it.number.toString() }!!
+                val structure = getTitleStructure(title)!!
+
+                structure.findChild(reference)?.wordCount ?: 0
+            } catch (e: Exception) {
+                e.printStackTrace()
+                0
+            }
         }
     }
 }
