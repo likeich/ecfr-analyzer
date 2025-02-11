@@ -113,7 +113,7 @@ object HomeScreen : DogeScreen() {
                 userScrollEnabled = false,
                 verticalArrangement = Arrangement.spacedBy(Dimensions.defaultPadding),
                 horizontalArrangement = Arrangement.spacedBy(Dimensions.defaultPadding),
-                modifier = Modifier.heightIn(max = 6000.dp)
+                modifier = Modifier.heightIn(max = Dimensions.gridHeight)
             ) {
                 items(sortedAgencies, key = { it.displayName }) { agency ->
                     SimpleCard(
@@ -134,7 +134,7 @@ object HomeScreen : DogeScreen() {
 fun SortAndFilterOptions(screenModel: HomeScreenModel) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(Dimensions.smallPadding),
         modifier = Modifier.horizontalScroll(rememberScrollState())
     ) {
         EnumDropdownButton(

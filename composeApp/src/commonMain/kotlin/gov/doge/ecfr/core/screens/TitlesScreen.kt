@@ -120,7 +120,7 @@ object TitlesScreen : DogeScreen() {
                 userScrollEnabled = false,
                 verticalArrangement = Arrangement.spacedBy(Dimensions.defaultPadding),
                 horizontalArrangement = Arrangement.spacedBy(Dimensions.defaultPadding),
-                modifier = Modifier.heightIn(max = 6000.dp)
+                modifier = Modifier.heightIn(max = Dimensions.gridHeight)
             ) {
                 items(sortedTitles, key = { it.number }) { title ->
                     val corrections = appState.titleCorrections[title] ?: emptyList()
@@ -141,7 +141,7 @@ object TitlesScreen : DogeScreen() {
 fun SortAndFilterOptions(screenModel: TitlesScreenModel) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(Dimensions.smallPadding),
         modifier = Modifier.horizontalScroll(rememberScrollState())
     ) {
         EnumDropdownButton(
