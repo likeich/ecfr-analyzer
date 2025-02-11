@@ -21,6 +21,7 @@ voyager = "1.1.0-beta03"
 charts = "0.1.1"
 emoji = "2.1.0"
 xml = "0.90.3"
+atomic = "0.27.0"
 
 [libraries]
 kotlin-stdlib-wasm-js = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-wasm-js", version.ref = "kotlin" }
@@ -52,6 +53,7 @@ kodein-emoji = { module = "org.kodein.emoji:emoji-kt", version.ref = "emoji" }
 kodein-emoji-compose = { module = "org.kodein.emoji:emoji-compose-m3", version.ref = "emoji" }
 xml-util-core = { module = "io.github.pdvrieze.xmlutil:core", version.ref = "xml" }
 xml-util-serialization = { module = "io.github.pdvrieze.xmlutil:serialization", version.ref = "xml" }
+atomic-fu = { group = "org.jetbrains.kotlinx", name = "atomicfu", version.ref = "atomic" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -60,3 +62,4 @@ composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-mu
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+atomicFu = { id = "org.jetbrains.kotlinx.atomicfu", version.ref = "atomic" }

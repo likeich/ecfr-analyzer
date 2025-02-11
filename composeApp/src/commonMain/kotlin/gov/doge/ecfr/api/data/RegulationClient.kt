@@ -1,5 +1,6 @@
 package gov.doge.ecfr.api.data
 
+import cafe.adriel.voyager.core.concurrent.AtomicInt32
 import gov.doge.ecfr.api.data.models.AgenciesResponse
 import gov.doge.ecfr.api.data.models.Agency
 import gov.doge.ecfr.api.data.models.CfrHierarchy
@@ -28,7 +29,12 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.encodeURLParameter
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.sync.Semaphore
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.json.Json
 
@@ -163,6 +169,30 @@ class RegulationClient {
             getTitleContent(title, cfrHierarchy)
         }
         return agencyContent
+    }
+
+    suspend fun getWordCountsForAgencies(agencies: List<Agency>, titles: List<Title>, maxConcurrentRequests: Int = 8, onProgress: (Int, Int) -> Unit) {
+        val processed = atomic(0)
+        val semaphore = Semaphore(maxConcurrentRequests)
+        coroutineScope {
+            agencies.map { agency ->
+                async(Dispatchers.Default) {
+                    semaphore.withPermit {
+                        agency.wordCount = getWordCountForAgency(agency, titles)
+                        onProgress(processed.incrementAndGet(), agencies.size)
+                    }
+                }
+            }.awaitAll()
+        }
+    }
+
+    private suspend fun <T> Semaphore.withPermit(block: suspend () -> T): T {
+        acquire()
+        try {
+            return block()
+        } finally {
+            release()
+        }
     }
 
     suspend fun getWordCountForAgency(agency: Agency, titles: List<Title>): Int {

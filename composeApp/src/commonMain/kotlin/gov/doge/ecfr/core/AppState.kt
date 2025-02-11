@@ -46,15 +46,8 @@ class AppState {
             })
 
             state = State.Loading("Loading agency information...")
-            var agenciesLoaded = 0
-            agencies.chunked(8).forEach { chunk ->
-                chunk.mapAsync(scope = CoroutineScope(Dispatchers.Default), maxConcurrent = 10) { agency ->
-                    agency.wordCount = client.getWordCountForAgency(agency, titles)
-                }.await()
-
-                agenciesLoaded += chunk.size
-                state = State.Loading("Loading agency information... $agenciesLoaded/${agencies.size}")
-                averageWordCount = agencies.filter { it.wordCount > 0 }.map { it.wordCount }.average().toInt()
+            client.getWordCountsForAgencies(agencies, titles) { processed, total ->
+                state = State.Loading("Loading agency information... $processed/$total")
             }
         } catch (e: Exception) {
             state = State.Error(e.message ?: "An error occurred")

@@ -78,6 +78,7 @@ kotlin {
 
             implementation(libs.xml.util.core)
             implementation(libs.xml.util.serialization)
+            implementation(libs.atomic.fu)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
