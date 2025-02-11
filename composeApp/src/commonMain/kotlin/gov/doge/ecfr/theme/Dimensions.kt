@@ -7,5 +7,5 @@ object Dimensions {
     val smallPadding = 8.dp
 
     val chartSize = 375.dp
-    val gridHeight = 10_000.dp
+    val gridHeight = 15_000.dp
 }
