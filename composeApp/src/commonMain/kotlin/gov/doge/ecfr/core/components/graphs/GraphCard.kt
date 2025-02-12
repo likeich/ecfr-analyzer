@@ -31,6 +31,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import ecfranalyzer.composeapp.generated.resources.Res
 import ecfranalyzer.composeapp.generated.resources.resize_fill
+import gov.doge.ecfr.api.data.models.Title
 import gov.doge.ecfr.theme.Dimensions
 import org.jetbrains.compose.resources.painterResource
 
@@ -57,11 +58,7 @@ fun GraphCard(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
+                Title(title)
                 Spacer(Modifier.widthIn(16.dp))
                 IconButton(
                     onClick = { expanded = true },
@@ -91,10 +88,26 @@ fun GraphCard(
                 ),
                 modifier = Modifier.fillMaxHeight(.5f).aspectRatio(2f/1f)
             ) {
-                Box(modifier = Modifier.padding(50.dp)) {
-                    content()
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(20.dp),
+                ) {
+                    Title(title)
+                    Box {
+                        content()
+                    }
                 }
             }
         }
     }
+}
+
+@Composable
+fun Title(title: String) {
+    Text(
+        text = title,
+        style = MaterialTheme.typography.titleLarge,
+        fontWeight = FontWeight.Bold
+    )
 }
